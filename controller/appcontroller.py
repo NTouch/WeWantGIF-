@@ -39,8 +39,7 @@ class AppController:
 
         self.create_gif(url_response["data"])
 
-        for gif in self.gifs:
-            self.output.show_message(gif)
+        helpers.put_gif_in_file(messages.HTML_PATH, self.gifs)
 
     def create_gif(self, gifs: dict) -> None:
         """
