@@ -1,6 +1,7 @@
 import urllib.parse
 import requests
-
+from bs4 import BeautifulSoup
+from model.gif import Gif
 
 def format_for_url(text: str) -> str:
     """
@@ -48,3 +49,21 @@ def create_query_url(base_url: str, api_key: str, query: str, number_of_result: 
     """
     return f"{base_url}api_key={api_key}&q={query}&limit={number_of_result}" \
            f"&offset=0&rating=g&lang=en"
+
+
+def put_gif_in_file(path: str, gifs: list[Gif]):
+    with open(path, "r", encoding="utf-8") as webpage:
+        content = webpage.read()
+
+    soup = BeautifulSoup(content, features="html.parser")
+    iframe_section = soup.find(id="gif-gallery")
+    iframe_section.clear()
+
+    for gif in gifs:
+        html_to_add = f"<iframe id={gif.id} title={gif.title} " \
+                      f"width={gif.size[1]} height={gif.size[0]} " \
+                      f"src={gif.url}/></iframe>"
+        iframe_section.append(BeautifulSoup(html_to_add, features="html.parser"))
+
+    with open(path, "w", encoding="utf-8") as webpage:
+        webpage.write(str(soup))
