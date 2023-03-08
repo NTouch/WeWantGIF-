@@ -52,7 +52,7 @@ class AppController:
         :return: None
         """
         for gif in gifs:
-            self.gifs.append(Gif(gif["id"], gif["title"], gif["url"], (gif["images"]["original"]["height"], gif["images"]["original"]["width"])))
+            self.gifs.append(Gif(gif["id"], gif["title"], gif["embed_url"], (gif["images"]["original"]["height"], gif["images"]["original"]["width"])))
 
     def number_of_result_input(self) -> str:
         """
